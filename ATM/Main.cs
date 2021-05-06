@@ -205,7 +205,7 @@ namespace ATM
             return module;
         }
 
-        public String GenerateKComponent()
+        public String GenerateKComponent(String type)
         {
             String package = tb_packageName.Text;
             String module = "package  " + package + "\n";
@@ -215,7 +215,7 @@ namespace ATM
                 "@ActivityScope\n" +
                 "@Component(modules = arrayOf(" + tb_pageName.Text + "Module::class),dependencies = arrayOf(AppComponent::class))\n" +
                 "interface " + tb_pageName.Text + "Component{\n" +
-                "    fun inject(activity:" + tb_pageName.Text + "Activity)\n" +
+                "    fun inject(activity:" + tb_pageName.Text +type +")\n" +
                 "}";
             return module;
         }
@@ -284,16 +284,16 @@ namespace ATM
                 }
                 //语言：Kotlin
                 else
-               {
-                 createFile(tb_model.Text, GenerateKModel());
-                createFile(tb_layout.Text, GenerateLayout());
-                createFile(tb_component.Text, GenerateKComponent());
-                createFile(tb_module.Text, GenerateKModule());
-                createFile(tb_presenter.Text, GenerateKPresenter());
-                createFile(tb_view.Text, GenerateKContract());
-                createFile(tb_pageName.Text + "Activity.kt", GenerateKActivity());
+                {
+                    createFile(tb_model.Text, GenerateKModel());
+                    createFile(tb_layout.Text, GenerateLayout());
+                    createFile(tb_component.Text, GenerateKComponent("Activity"));
+                    createFile(tb_module.Text, GenerateKModule());
+                    createFile(tb_presenter.Text, GenerateKPresenter());
+                    createFile(tb_view.Text, GenerateKContract());
+                    createFile(tb_pageName.Text + "Activity.kt", GenerateKActivity());
                 }
-           
+
             }
             //Fragment
             if (rb_fragment.Checked)
@@ -301,13 +301,13 @@ namespace ATM
                 //语言Kotlin
                 if (rb_kotlin.Checked)
                 {
-                createFile(tb_model.Text, GenerateKModel());
-                createFile(tb_layout.Text, GenerateLayout());
-                createFile(tb_component.Text, GenerateKComponent());
-                createFile(tb_module.Text, GenerateKModule());
-                createFile(tb_presenter.Text, GenerateKPresenter());
-                createFile(tb_view.Text, GenerateKContract());
-                createFile(tb_pageName.Text + "Fragment.kt", GenerateKFragment());
+                    createFile(tb_model.Text, GenerateKModel());
+                    createFile(tb_layout.Text, GenerateLayout());
+                    createFile(tb_component.Text, GenerateKComponent("Fragment"));
+                    createFile(tb_module.Text, GenerateKModule());
+                    createFile(tb_presenter.Text, GenerateKPresenter());
+                    createFile(tb_view.Text, GenerateKContract());
+                    createFile(tb_pageName.Text + "Fragment.kt", GenerateKFragment());
                 }
                 else
                 {
@@ -319,7 +319,7 @@ namespace ATM
                     createFile(tb_presenter.Text, GenerateJPresenter());
                     createFile(tb_view.Text, GenerateJContract());
                     //TODO 要生成JFragment
-               //     createFile(tb_pageName.Text + "Fragment.java", GenerateJFragment());
+                    //     createFile(tb_pageName.Text + "Fragment.java", GenerateJFragment());
                 }
 
             }

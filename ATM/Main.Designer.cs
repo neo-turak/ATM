@@ -366,13 +366,13 @@ namespace ATM
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 18);
             this.label5.TabIndex = 8;
-            this.label5.Text = "V 1.0.2";
+            this.label5.Text = "V 1.0.3";
             // 
             // atm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BackColor = System.Drawing.Color.Teal;
             this.ClientSize = new System.Drawing.Size(604, 530);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
