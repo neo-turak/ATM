@@ -1,7 +1,7 @@
 ﻿
 namespace ATM
 {
-    partial class atm
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,8 @@ namespace ATM
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(atm));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tb_pageName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,14 +60,24 @@ namespace ATM
             this.btn_pickPath = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.TSMIsettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI皮肤 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi环境 = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMIexit = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.反馈ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb_pageName
             // 
-            this.tb_pageName.Location = new System.Drawing.Point(76, 9);
+            this.tb_pageName.Location = new System.Drawing.Point(76, 33);
             this.tb_pageName.Name = "tb_pageName";
             this.tb_pageName.Size = new System.Drawing.Size(255, 24);
             this.tb_pageName.TabIndex = 0;
@@ -75,33 +86,34 @@ namespace ATM
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 12);
+            this.label1.Location = new System.Drawing.Point(12, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 18);
+            this.label1.Size = new System.Drawing.Size(62, 18);
             this.label1.TabIndex = 1;
-            this.label1.Text = "页名";
+            this.label1.Text = "页      名";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(29, 47);
+            this.label2.Location = new System.Drawing.Point(10, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 18);
+            this.label2.Size = new System.Drawing.Size(66, 18);
             this.label2.TabIndex = 2;
-            this.label2.Text = "包名";
+            this.label2.Text = "包       名";
             // 
             // tb_packageName
             // 
             this.tb_packageName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_packageName.Location = new System.Drawing.Point(76, 45);
+            this.tb_packageName.Location = new System.Drawing.Point(76, 64);
             this.tb_packageName.Name = "tb_packageName";
             this.tb_packageName.Size = new System.Drawing.Size(427, 22);
             this.tb_packageName.TabIndex = 1;
+            this.tb_packageName.Leave += new System.EventHandler(this.tb_packageName_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 81);
+            this.label3.Location = new System.Drawing.Point(9, 100);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 18);
             this.label3.TabIndex = 2;
@@ -110,9 +122,9 @@ namespace ATM
             // tb_path
             // 
             this.tb_path.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_path.Location = new System.Drawing.Point(88, 80);
+            this.tb_path.Location = new System.Drawing.Point(76, 98);
             this.tb_path.Name = "tb_path";
-            this.tb_path.Size = new System.Drawing.Size(415, 22);
+            this.tb_path.Size = new System.Drawing.Size(427, 22);
             this.tb_path.TabIndex = 2;
             // 
             // groupBox1
@@ -133,7 +145,7 @@ namespace ATM
             this.groupBox1.Controls.Add(this.cb_presenter);
             this.groupBox1.Controls.Add(this.cb_view);
             this.groupBox1.Controls.Add(this.cb_model);
-            this.groupBox1.Location = new System.Drawing.Point(20, 121);
+            this.groupBox1.Location = new System.Drawing.Point(20, 135);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(568, 338);
             this.groupBox1.TabIndex = 5;
@@ -340,7 +352,7 @@ namespace ATM
             // 
             // btn_pickPath
             // 
-            this.btn_pickPath.Location = new System.Drawing.Point(509, 74);
+            this.btn_pickPath.Location = new System.Drawing.Point(509, 92);
             this.btn_pickPath.Name = "btn_pickPath";
             this.btn_pickPath.Size = new System.Drawing.Size(79, 34);
             this.btn_pickPath.TabIndex = 3;
@@ -352,7 +364,7 @@ namespace ATM
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(209, 476);
+            this.label4.Location = new System.Drawing.Point(179, 476);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(222, 18);
             this.label4.TabIndex = 7;
@@ -361,19 +373,88 @@ namespace ATM
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label5.Location = new System.Drawing.Point(278, 503);
+            this.label5.Location = new System.Drawing.Point(247, 503);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 18);
             this.label5.TabIndex = 8;
-            this.label5.Text = "V 1.0.3";
+            this.label5.Text = "V 1.0.5";
             // 
-            // atm
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMIsettings,
+            this.帮助HToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(604, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // TSMIsettings
+            // 
+            this.TSMIsettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI皮肤,
+            this.tsmi环境,
+            this.TSMIexit});
+            this.TSMIsettings.Name = "TSMIsettings";
+            this.TSMIsettings.Size = new System.Drawing.Size(59, 20);
+            this.TSMIsettings.Text = "设置(&S)";
+            // 
+            // TSMI皮肤
+            // 
+            this.TSMI皮肤.Name = "TSMI皮肤";
+            this.TSMI皮肤.Size = new System.Drawing.Size(126, 22);
+            this.TSMI皮肤.Text = "皮肤";
+            // 
+            // tsmi环境
+            // 
+            this.tsmi环境.Name = "tsmi环境";
+            this.tsmi环境.Size = new System.Drawing.Size(126, 22);
+            this.tsmi环境.Text = "环境配置";
+            this.tsmi环境.Click += new System.EventHandler(this.tsmi环境_Click);
+            // 
+            // TSMIexit
+            // 
+            this.TSMIexit.Name = "TSMIexit";
+            this.TSMIexit.Size = new System.Drawing.Size(126, 22);
+            this.TSMIexit.Text = "退出(&X)";
+            this.TSMIexit.Click += new System.EventHandler(this.TSMIexit_Click);
+            // 
+            // 帮助HToolStripMenuItem
+            // 
+            this.帮助HToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.关于ToolStripMenuItem,
+            this.反馈ToolStripMenuItem});
+            this.帮助HToolStripMenuItem.Name = "帮助HToolStripMenuItem";
+            this.帮助HToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.帮助HToolStripMenuItem.Text = "帮助(&H)";
+            // 
+            // 关于ToolStripMenuItem
+            // 
+            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.关于ToolStripMenuItem.Text = "关于";
+            // 
+            // 反馈ToolStripMenuItem
+            // 
+            this.反馈ToolStripMenuItem.Name = "反馈ToolStripMenuItem";
+            this.反馈ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.反馈ToolStripMenuItem.Text = "反馈";
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Teal;
+            this.BackColor = System.Drawing.Color.LightSkyBlue;
             this.ClientSize = new System.Drawing.Size(604, 530);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btn_pickPath);
@@ -387,10 +468,12 @@ namespace ATM
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.Name = "atm";
+            this.Name = "Main";
             this.Text = "ARM 模板助手";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.atm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -398,6 +481,8 @@ namespace ATM
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -434,6 +519,15 @@ namespace ATM
         private System.Windows.Forms.Button btn_pickPath;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem TSMIsettings;
+        private System.Windows.Forms.ToolStripMenuItem TSMI皮肤;
+        private System.Windows.Forms.ToolStripMenuItem tsmi环境;
+        private System.Windows.Forms.ToolStripMenuItem TSMIexit;
+        private System.Windows.Forms.ToolStripMenuItem 帮助HToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 反馈ToolStripMenuItem;
     }
 }
 

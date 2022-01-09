@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SkinSharp;
 
 namespace ATM
 {
@@ -14,9 +15,9 @@ namespace ATM
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
+          //  Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new atm());
+            Application.Run(new Main());
         }
     }
 }

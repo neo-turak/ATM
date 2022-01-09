@@ -7,24 +7,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
-
+using SkinSharp;
 namespace ATM
 {
-    public partial class atm : Form
+    public partial class Main : Form
     {
         public String name = "";
         public String layoutName = "";
         public String path = "";
-
-        public atm()
+        public SkinH_Net skinH;
+        string configFile = Path.Combine(AppContext.BaseDirectory, Application.ProductName + ".txt");
+        public Main()
         {
+            skinH = new SkinH_Net();
+            //  skinH.AttachEx(AppContext.BaseDirectory + "/skins/0002.she", null);
             InitializeComponent();
+
         }
 
         private void atm_Load(object sender, EventArgs e)
         {
             tb_path.Text = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            this.skinLists();
+            CreateFile();
         }
 
         private void btn_pickPath_Click(object sender, EventArgs e)
@@ -41,6 +48,12 @@ namespace ATM
                 else
                 {
                     tb_path.Text = dialog.SelectedPath;
+                    if (File.Exists(configFile))
+                    {
+                        String[] lines = File.ReadAllLines(configFile);
+                        lines[3] = "export path:" + dialog.SelectedPath;
+                        File.WriteAllLines(configFile, lines);
+                    }
                 }
                 //this.LoadingText = "处理中...";
                 //this.LoadingDisplay = true;
@@ -93,7 +106,6 @@ namespace ATM
             }
             else
             {
-
                 this.tb_layout.Text = this.tb_layout.Text.Replace("activity", "fragment");
             }
         }
@@ -116,35 +128,26 @@ namespace ATM
             s.Close();
         }
 
-        public String GenerateKModel()
+        public String GenerateKModel(String type)
 
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module += "import android.app.Application\n" +
-                        "import com.google.gson.Gson\n" +
-                        "import com.jess.arms.di.scope.ActivityScope\n" +
+            module += 
+                        "import com.jess.arms.di.scope."+type +"Scope\n"+
                         "import com.jess.arms.integration.IRepositoryManager\n" +
                         "import com.jess.arms.mvp.BaseModel\n" +
                         "import javax.inject.Inject\n\n" +
-                        "@ActivityScope\n" +
+                        "@"+type +"Scope\n" +
                         "class " + tb_pageName.Text + "Model\n" +
                         "@Inject\n" +
                         "constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager)," + tb_pageName.Text + "Contract.Model{\n" +
-                     "   @Inject\n" +
-                 "  lateinit var mGson:Gson;\n" +
-                  " @Inject\n" +
-               "lateinit var mApplication:Application;\n" +
-
-               " override fun onDestroy()\n" +
-               "     {\n" +
-               "         super.onDestroy();\n" +
-                  "     }\n" +
                " }\n";
 
             return module;
         }
 
+   
         public String GenerateKContract()
         {
             String package = tb_packageName.Text;
@@ -152,53 +155,43 @@ namespace ATM
             module += "import com.jess.arms.mvp.IModel\n" +
                       "import com.jess.arms.mvp.IView\n\n" +
                       "interface " + tb_pageName.Text + "Contract {\n" +
-                     "//对于经常使用的关于UI的方法可以定义到IView中,如显示隐藏进度条,和显示文字消息\n" +
                     " interface View : IView\n" +
-                    "//Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存\n" +
                     "interface Model : IModel\n" +
                         "}";
             return module;
         }
 
-        public String GenerateKPresenter()
+        public String GenerateKPresenter(String type)
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module += "import android.app.Application\n" +
-                    "import com.jess.arms.di.scope.ActivityScope\n" +
-                    "import com.jess.arms.http.imageloader.ImageLoader\n" +
-                    "import com.jess.arms.integration.AppManager\n" +
+            module +="import com.jess.arms.di.scope." + type +"Scope\n"+
                     "import com.jess.arms.mvp.BasePresenter\n" +
                     "import me.jessyan.rxerrorhandler.core.RxErrorHandler\n" +
                     "import javax.inject.Inject\n\n\n" +
-                    "@ActivityScope\n class " + tb_pageName.Text + "Presenter\n @Inject\n" +
+                    "@"+type +"Scope\n"+
+                    "class " + tb_pageName.Text + "Presenter\n @Inject\n" +
                     "constructor(model: " + tb_pageName.Text + "Contract.Model, rootView: " + tb_pageName.Text + "Contract.View) :\n" +
                     "BasePresenter<" + tb_pageName.Text + "Contract.Model, " + tb_pageName.Text + "Contract.View>(model, rootView) {\n" +
-                    "@Inject\n lateinit var mErrorHandler: RxErrorHandler\n" +
-                    "@Inject\n lateinit var mApplication: Application\n" +
-                    "@Inject\n lateinit var mImageLoader: ImageLoader\n" +
-                    "@Inject\n lateinit var mAppManager: AppManager\n" +
-                    "override fun onDestroy() {\n" +
-                     " super.onDestroy();\n" +
-                    "}" +
+                    "@Inject\n lateinit var mErrorHandler: RxErrorHandler\n\n" +
                     "}";
             return module;
         }
 
-        public String GenerateKModule()
+        public String GenerateKModule(String type)
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module += "import com.jess.arms.di.scope.ActivityScope\n" +
+            module += "import com.jess.arms.di.scope."+type +"Scope\n"+
                     "import dagger.Module\n" +
                     "import dagger.Provides\n\n\n" +
-                    "@Module\n" +
-                    "//构建" + tb_pageName.Text + "Module时,将View的实现类传进来,这样就可以提供View的实现类给presenter\n" +
                     "class " + tb_pageName.Text + "Module(private val view:" + tb_pageName.Text + "Contract.View) {\n" +
-                    "@ActivityScope\n@Provides\n" +
+                    "@"+type+"Scope\n"+
+                    "@Provides\n" +
                     "fun provide" + tb_pageName.Text + "View():" + tb_pageName.Text + "Contract.View{\n" +
                     "     return this.view\n}\n\n" +
-                    "@ActivityScope\n@Provides\n" +
+                    "@" + type + "Scope\n" +
+                    "@Provides\n" +
                     "fun provide" + tb_pageName.Text + "Model(model:" + tb_pageName.Text + "Model):" + tb_pageName.Text + "Contract.Model{\n" +
                     "return model\n" +
                     "}\n}";
@@ -210,12 +203,12 @@ namespace ATM
             String package = tb_packageName.Text;
             String module = "package  " + package + "\n";
             module += "import com.jess.arms.di.component.AppComponent\n" +
-                "import com.jess.arms.di.scope.ActivityScope\n" +
+                "import com.jess.arms.di.scope."+type +"Scope\n"+
                 "import dagger.Component\n\n" +
-                "@ActivityScope\n" +
-                "@Component(modules = arrayOf(" + tb_pageName.Text + "Module::class),dependencies = arrayOf(AppComponent::class))\n" +
+                "@"+type + "Scope\n" +
+                "@Component(modules = [" + tb_pageName.Text + "Module::class],dependencies = [AppComponent::class])\n" +
                 "interface " + tb_pageName.Text + "Component{\n" +
-                "    fun inject(activity:" + tb_pageName.Text +type +")\n" +
+                "    fun inject(activity:" + tb_pageName.Text + type + ")\n" +
                 "}";
             return module;
         }
@@ -223,12 +216,13 @@ namespace ATM
         public String GenerateLayout()
         {
             String module = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-   "<android.support.constraint.ConstraintLayout\n" +
+   "<androidx.constraintlayout.widget.ConstraintLayout\n" +
         "        xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
         "        xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
+        "        xmlns:tools=\"http://schemas.android.com/tools\"\n"+
         "        android:layout_width=\"match_parent\"\n" +
         "        android:layout_height=\"match_parent\">\n\n\n\n" +
-        "</android.support.constraint.ConstraintLayout>\n";
+        "</androidx.constraintlayout.widget.ConstraintLayout>\n";
             return module;
         }
 
@@ -285,11 +279,11 @@ namespace ATM
                 //语言：Kotlin
                 else
                 {
-                    createFile(tb_model.Text, GenerateKModel());
+                    createFile(tb_model.Text, GenerateKModel("Activity"));
                     createFile(tb_layout.Text, GenerateLayout());
                     createFile(tb_component.Text, GenerateKComponent("Activity"));
-                    createFile(tb_module.Text, GenerateKModule());
-                    createFile(tb_presenter.Text, GenerateKPresenter());
+                    createFile(tb_module.Text, GenerateKModule("Activity"));
+                    createFile(tb_presenter.Text, GenerateKPresenter("Activity"));
                     createFile(tb_view.Text, GenerateKContract());
                     createFile(tb_pageName.Text + "Activity.kt", GenerateKActivity());
                 }
@@ -301,11 +295,11 @@ namespace ATM
                 //语言Kotlin
                 if (rb_kotlin.Checked)
                 {
-                    createFile(tb_model.Text, GenerateKModel());
+                    createFile(tb_model.Text, GenerateKModel("Fragment"));
                     createFile(tb_layout.Text, GenerateLayout());
                     createFile(tb_component.Text, GenerateKComponent("Fragment"));
-                    createFile(tb_module.Text, GenerateKModule());
-                    createFile(tb_presenter.Text, GenerateKPresenter());
+                    createFile(tb_module.Text, GenerateKModule("Fragment"));
+                    createFile(tb_presenter.Text, GenerateKPresenter("Fragment"));
                     createFile(tb_view.Text, GenerateKContract());
                     createFile(tb_pageName.Text + "Fragment.kt", GenerateKFragment());
                 }
@@ -526,11 +520,11 @@ namespace ATM
         public String GenerateKFragment()
         {
             String package = tb_packageName.Text.ToString();
-            String module = "package " + package + "\n\n" +
- "import android.content.Intent\n" +
- "import android.os.Bundle\n" +
+            String module = 
+"package " + package + "\n\n" +
+"import android.content.Intent\n" +
+"import android.os.Bundle\n" +
 "import android.os.Message\n" +
-"import android.support.v4.app.Fragment\n" +
 "import android.view.LayoutInflater\n" +
 "import android.view.View\n" +
 "import android.view.ViewGroup\n" +
@@ -541,22 +535,8 @@ namespace ATM
 "import " + package + "." + tb_pageName.Text.ToString() + "Module\n" +
 "import " + package + "." + tb_pageName.Text.ToString() + "Contract\n" +
 "import " + package + "." + tb_pageName.Text.ToString() + "Presenter\n\n" +
-"import " + package + ".R\n" +
-"/**\n" +
- "* 如果没presenter\n" +
-" * 你可以这样写\n" +
- "*\n" +
-" *@FragmentScope(請注意命名空間) class NullObjectPresenterByFragment\n" +
- "* @Inject constructor() : IPresenter {\n" +
-" * override fun onStart()\n" +
- "       {\n" +
- "           * }\n" +
-" *\n" +
-" * override fun onDestroy()\n" +
- "       {\n" +
- "           * }\n" +
- "* }\n" +
- "*/\n" +
+"import " + package + ".R\n\n\n\n" +
+
 
 "class " + tb_pageName.Text.ToString() + "Fragment : BaseFragment<" + tb_pageName.Text.ToString() + "Presenter>() , " + tb_pageName.Text.ToString() + "Contract.View{\n" +
 "   companion object {\n" +
@@ -565,7 +545,7 @@ namespace ATM
 "   return fragment\n" +
 "}\n}\n\n\n" +
 "   override fun setupFragmentComponent(appComponent:AppComponent) {\n" +
-"       Dagger" + tb_pageName.Text.ToString() + "Component//如找不到该类，请编译一下项目{\n" +
+"       Dagger" + tb_pageName.Text.ToString() + "Component//需要编译\n" +
 "                .builder()\n                .appComponent(appComponent)\n" +
 "                ." + tb_pageName.Text.Substring(0, 1).ToLower() + tb_pageName.Text.Substring(1, tb_pageName.Text.Length - 1) + "Module(" + tb_pageName.Text + "Module(this))\n" +
 "                .build()\n                .inject(this)\n}\n" +
@@ -585,6 +565,127 @@ namespace ATM
             return module;
         }
 
-    }
+        public void skinLists()
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(AppContext.BaseDirectory + "/skins");
+            //默认指定一个皮肤。
+            String skinName = "";
+            FileInfo config = new FileInfo(configFile);
+            if (config.Exists)
+            {
+                String[] skin = File.ReadAllLines(configFile);
+                skinName = skin[0].Substring(10);
+            }
+            else
+            {
+                skinName = "china.she";
+            }
 
+            if (directoryInfo.Exists)
+            {
+                FileInfo[] fileInfos = directoryInfo.GetFiles();
+                foreach (FileInfo fileInfo in fileInfos)
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem("s" + fileInfo.Name);
+                    item.Click += Item_Click;
+                    item.Text = fileInfo.Name;
+                    TSMI皮肤.DropDownItems.Add(item);
+                    if (fileInfo.Name == skinName)
+                    {
+                        item.Checked = true;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("皮肤文件不存在！");
+            }
+        }
+
+        private void Item_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem i in TSMI皮肤.DropDownItems)
+            {
+                i.Checked = false;
+            }
+            String name = (sender as ToolStripMenuItem).Text;
+            (sender as ToolStripMenuItem).Checked = true;
+            skinH.AttachEx(AppContext.BaseDirectory + "/skins/" + name, null);
+            String[] lines = File.ReadAllLines(configFile);
+            lines[0] = "skin name:" + name;
+            File.WriteAllLines(configFile, lines);
+        }
+
+        private void tsmi环境_Click(object sender, EventArgs e)
+        {
+            Form form = new Settings();
+            form.Show();
+            this.Hide();
+        }
+
+        private void TSMIexit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        /**
+         * 创建 
+         */
+        private void CreateFile()
+        {
+            //创建一个空白文件
+            if (File.Exists(configFile))
+            {
+               String[] str=File.ReadAllLines(configFile);
+                skinH.AttachEx(AppContext.BaseDirectory + "/skins/" + str[0].Substring(10), null);
+                tb_packageName.Text = str[2].Substring(13);
+                tb_path.Text = str[3].Substring(12);
+            }
+            else
+            {
+                //皮肤名称
+                string[] lines = {
+                "skin name:",
+                "user name:",
+                "package name:",
+                "export path:",
+                "package path:",
+                "contract path:",
+                "model path:",
+                "presenter path：" ,
+                "module path:",
+                "component path:",
+                "activity path:",
+                "fragment path:",
+                "layout path:",
+                "auto:"
+            };
+
+                foreach (ToolStripMenuItem item in this.TSMI皮肤.DropDownItems)
+                {
+                    if (item.Checked)
+                    {
+                        lines[0] = "skin name:" + item.Text;
+                        break;
+                    }
+                }
+                File.WriteAllLines(configFile, lines, Encoding.UTF8);
+
+            }
+        }
+
+        private void tb_packageName_Leave(object sender, EventArgs e)
+        {
+           String[] str=File.ReadAllLines(configFile);
+            str[2]= "package name:" + tb_packageName.Text;
+            File.WriteAllLines(configFile, str, Encoding.UTF8);
+        }
+
+    
+
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+    }
 }
