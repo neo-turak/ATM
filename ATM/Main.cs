@@ -133,12 +133,12 @@ namespace ATM
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module += 
-                        "import com.jess.arms.di.scope."+type +"Scope\n"+
+            module +=
+                        "import com.jess.arms.di.scope." + type + "Scope\n" +
                         "import com.jess.arms.integration.IRepositoryManager\n" +
                         "import com.jess.arms.mvp.BaseModel\n" +
                         "import javax.inject.Inject\n\n" +
-                        "@"+type +"Scope\n" +
+                        "@" + type + "Scope\n" +
                         "class " + tb_pageName.Text + "Model\n" +
                         "@Inject\n" +
                         "constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager)," + tb_pageName.Text + "Contract.Model{\n" +
@@ -147,7 +147,7 @@ namespace ATM
             return module;
         }
 
-   
+
         public String GenerateKContract()
         {
             String package = tb_packageName.Text;
@@ -165,11 +165,11 @@ namespace ATM
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module +="import com.jess.arms.di.scope." + type +"Scope\n"+
+            module += "import com.jess.arms.di.scope." + type + "Scope\n" +
                     "import com.jess.arms.mvp.BasePresenter\n" +
                     "import me.jessyan.rxerrorhandler.core.RxErrorHandler\n" +
                     "import javax.inject.Inject\n\n\n" +
-                    "@"+type +"Scope\n"+
+                    "@" + type + "Scope\n" +
                     "class " + tb_pageName.Text + "Presenter\n @Inject\n" +
                     "constructor(model: " + tb_pageName.Text + "Contract.Model, rootView: " + tb_pageName.Text + "Contract.View) :\n" +
                     "BasePresenter<" + tb_pageName.Text + "Contract.Model, " + tb_pageName.Text + "Contract.View>(model, rootView) {\n" +
@@ -182,11 +182,11 @@ namespace ATM
         {
             String package = tb_packageName.Text;
             String module = "package " + package + "\n";
-            module += "import com.jess.arms.di.scope."+type +"Scope\n"+
+            module += "import com.jess.arms.di.scope." + type + "Scope\n" +
                     "import dagger.Module\n" +
                     "import dagger.Provides\n\n\n" +
                     "class " + tb_pageName.Text + "Module(private val view:" + tb_pageName.Text + "Contract.View) {\n" +
-                    "@"+type+"Scope\n"+
+                    "@" + type + "Scope\n" +
                     "@Provides\n" +
                     "fun provide" + tb_pageName.Text + "View():" + tb_pageName.Text + "Contract.View{\n" +
                     "     return this.view\n}\n\n" +
@@ -203,9 +203,9 @@ namespace ATM
             String package = tb_packageName.Text;
             String module = "package  " + package + "\n";
             module += "import com.jess.arms.di.component.AppComponent\n" +
-                "import com.jess.arms.di.scope."+type +"Scope\n"+
+                "import com.jess.arms.di.scope." + type + "Scope\n" +
                 "import dagger.Component\n\n" +
-                "@"+type + "Scope\n" +
+                "@" + type + "Scope\n" +
                 "@Component(modules = [" + tb_pageName.Text + "Module::class],dependencies = [AppComponent::class])\n" +
                 "interface " + tb_pageName.Text + "Component{\n" +
                 "    fun inject(activity:" + tb_pageName.Text + type + ")\n" +
@@ -219,7 +219,7 @@ namespace ATM
    "<androidx.constraintlayout.widget.ConstraintLayout\n" +
         "        xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
         "        xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
-        "        xmlns:tools=\"http://schemas.android.com/tools\"\n"+
+        "        xmlns:tools=\"http://schemas.android.com/tools\"\n" +
         "        android:layout_width=\"match_parent\"\n" +
         "        android:layout_height=\"match_parent\">\n\n\n\n" +
         "</androidx.constraintlayout.widget.ConstraintLayout>\n";
@@ -228,6 +228,7 @@ namespace ATM
 
         public String GenerateKActivity()
         {
+            string[] str = File.ReadAllLines(configFile);
             String package = tb_packageName.Text;
             String module = "package " + package + "\n\n" +
             "import android.content.Intent\n" +
@@ -235,10 +236,16 @@ namespace ATM
             "import com.jess.arms.base.BaseActivity\n" +
             "import com.jess.arms.di.component.AppComponent\n" +
             "import com.jess.arms.utils.ArmsUtils\n\n" +
+            "   /**\n" +
+            "     *@Author " + str[1].Substring(10) + "\n" +
+            "     *@Time  " + DateTime.Now.ToString() + "\n" +
+            "     *@Description  \n" +
+            "     *@Version 1.0  \n" +
+            "     **/\n\n"+
             "//TODO 请自行声明到Manifest里\n" +
             "class " + tb_pageName.Text + "Activity : BaseActivity<" + tb_pageName.Text + "Presenter>() , " + tb_pageName.Text + "Contract.View {\n\n" +
             "    override fun setupActivityComponent(appComponent:AppComponent) {\n" +
-            " Dagger" + tb_pageName.Text + "Component //如找不到该类,请编译一下项目\n" +
+            "             Dagger" + tb_pageName.Text + "Component \n" +
             "                .builder()\n" +
             "                .appComponent(appComponent)\n" +
             "                ." + tb_pageName.Text.ToString().Substring(0, 1).ToLower() + tb_pageName.Text.Substring(1, tb_pageName.Text.Length - 1) + "Module(" + tb_pageName.Text + "Module(this))\n" +
@@ -246,7 +253,7 @@ namespace ATM
             "                .inject(this)\n" +
             "    }\n\n" +
             "    override fun initView(savedInstanceState:Bundle?):Int {\n" +
-            "              return R.layout." + tb_layout.Text.Replace(".xml", "") + " //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0\n" +
+            "              return R.layout." + tb_layout.Text.Replace(".xml", "") + " \n" +
             "}\n\n\n\n" +
             "    override fun initData(savedInstanceState:Bundle?) {\n" +
             "\n\n}\n" +
@@ -322,6 +329,7 @@ namespace ATM
         }
         public String GenerateJActivity()
         {
+            String[] str = File.ReadAllLines(configFile);
             String package = tb_packageName.Text.ToString();
             String module = "package " + package + ";" + "\n\n" +
                 "import android.content.Intent;\n" +
@@ -336,12 +344,18 @@ namespace ATM
 "import " + tb_packageName + "." + tb_pageName.Text.ToString() + "Presenter;\n" +
 "import " + tb_packageName + "." + "R;\n" +
 "import static com.jess.arms.utils.Preconditions.checkNotNull;\n\n" +
+"   /**\n" +
+"     *@Author " + str[1].Substring(10) + "\n" +
+"     *@Time  " + DateTime.Now.ToString() + "\n" +
+"     *@Description  \n" +
+"     *@Version 1.0  \n" +
+"     **/  \n\n" +
 "public class " + tb_pageName.Text.ToString() + "Activity extends BaseActivity<" + tb_pageName.Text.ToString() +
 "Presenter> implements " + tb_pageName.Text.ToString() + "Contract.View {\n\n" +
 
-"@Override\n\n" +
+"@Override\n" +
 "public void setupActivityComponent(@NonNull AppComponent appComponent) {\n" +
-"Dagger" + tb_pageName.Text.ToString() + "Component//如找不到该类，请编译一下项目" +
+"         Dagger" + tb_pageName.Text.ToString() + "Component//如找不到该类，请编译一下项目\n" +
 "           .builder()\n" +
 "           .appComponent(appComponent)\n" +
 "           .view(this)\n" +
@@ -351,15 +365,17 @@ namespace ATM
 
 "@Override\n" +
 "public int initView(@Nullable Bundle savedInstanceState) {\n" +
- "          return R.layout." + tb_layout.Text.Replace(".xml", "") + "; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0\n" +
- "}\n\n" +
+ "          return R.layout." + tb_layout.Text.Replace(".xml", "") +
+ "\n}\n\n" +
 
 "    @Override\n" +
 "    public void initData(@Nullable Bundle savedInstanceState)\n\n" +
-"            {\n\n" +
+"{\n\n" +
+"}\n\n" +
 "   @Override\n" +
 "    public void showLoading()\n" +
-"           {           \n }\n\n" +
+"{\n" +
+"}\n\n" +
 "  @Override\n" +
 "    public void hideLoading()\n{\n\n}\n\n" +
 "    @Override\n" +
@@ -380,7 +396,7 @@ namespace ATM
 "            {\n" +
 "                finish();\n" +
 "            }\n" +
-"            }\n";
+" }\n";
             return module;
         }
 
@@ -391,19 +407,19 @@ namespace ATM
 "import dagger.BindsInstance;\n" +
 "import dagger.Component;\n" +
 "import com.jess.arms.di.component.AppComponent;\n" +
-"import " + package + "." + tb_pageName + "Module;\n" +
-"import " + package + "." + tb_pageName + "Contract;\n" +
+"import " + package + "." + tb_pageName.Text.ToString() + "Module;\n" +
+"import " + package + "." + tb_pageName.Text.ToString() + "Contract;\n" +
 
 "import com.jess.arms.di.scope.ActivityScope;\n" +
-"import " + package + "." + tb_pageName + "Activity;\n" +
+"import " + package + "." + tb_pageName.Text.ToString() + "Activity;\n\n" +
 
 "@ActivityScope\n" +
 "@Component(modules = MeetingMeModule.class, dependencies = AppComponent.class)\n" +
-"public interface MeetingMeComponent" +
-"        {\n" +
+"public interface MeetingMeComponent\n" +
+"{\n" +
  "   void inject(MeetingMeActivity activity);\n" +
  "   @Component.Builder\n" +
-  "  interface Builder" +
+  "  interface Builder\n" +
   "          {\n" +
   "      @BindsInstance\n" +
   "      MeetingMeComponent.Builder view(MeetingMeContract.View view);\n" +
@@ -421,14 +437,11 @@ namespace ATM
 "import com.jess.arms.mvp.IView;\n" +
 "import com.jess.arms.mvp.IModel;\n" +
 
-"public interface " + tb_pageName.Text.ToString() + "Contract{\n" +
-"    //对于经常使用的关于UI的方法可以定义到IView中,如显示隐藏进度条,和显示文字消息\n" +
- "   interface View extends IView{\n" +
-
+"public interface " + tb_pageName.Text.ToString() + "Contract\n{\n" +
+ "   interface View extends IView\n{\n\n" +
  "   }\n" +
- "   //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存\n" +
  "   interface Model extends IModel" +
- "           {\n" +
+ "{\n" +
 
 "    }\n" +
 "}\n";
@@ -447,20 +460,12 @@ namespace ATM
 "import javax.inject.Inject;\n" +
 "import " + package + "." + tb_pageName.Text + "Contract;\n\n\n" +
 "@ActivityScope\n" +
-"public class " + tb_pageName.Text + "Model extends BaseModel implements " + tb_pageName.Text + "Contract.Model{\n" +
+"public class " + tb_pageName.Text.ToString() + "Model extends BaseModel implements " + tb_pageName.Text + "Contract.Model{\n" +
+
 "    @Inject\n" +
-"    Gson mGson;\n" +
-"    @Inject\n" +
-"    Application mApplication;\n\n" +
-"    @Inject\n" +
-"    public " + tb_pageName.Text + "+Model(IRepositoryManager repositoryManager) {\n" +
+"    public " + tb_pageName.Text.ToString() + "Model(IRepositoryManager repositoryManager) {\n" +
 "        super(repositoryManager);\n" +
-"}\n\n" +
-"    @Override\n" +
-"    public void onDestroy() {\n" +
-"        super.onDestroy();{\n" +
-"        this.mGson = null;\n" +
-"        this.mApplication = null;\n    }\n}";
+"}\n\n";
 
             return module;
         }
@@ -497,12 +502,6 @@ namespace ATM
 "    @Inject\n" +
 "    RxErrorHandler mErrorHandler;\n" +
 "    @Inject\n" +
-"   Application mApplication;\n" +
-"    @Inject\n" +
-"    ImageLoader mImageLoader;\n" +
-"    @Inject\n" +
-"    AppManager mAppManager;\n\n" +
-"    @Inject\n" +
 "   public " + tb_pageName.Text + "Presenter (" + tb_pageName.Text + "Contract.Model model," + tb_pageName.Text + "Contract.View rootView) {\n" +
 "        super(model, rootView);" +
 "   }\n\n" +
@@ -510,9 +509,6 @@ namespace ATM
 "    public void onDestroy() {\n" +
 "        super.onDestroy();\n" +
 "        this.mErrorHandler = null;\n" +
-"        this.mAppManager = null;\n" +
-"        this.mImageLoader = null;\n" +
-"        this.mApplication = null;\n" +
 "    }\n\n}";
             return module;
         }
@@ -520,7 +516,7 @@ namespace ATM
         public String GenerateKFragment()
         {
             String package = tb_packageName.Text.ToString();
-            String module = 
+            String module =
 "package " + package + "\n\n" +
 "import android.content.Intent\n" +
 "import android.os.Bundle\n" +
@@ -636,7 +632,7 @@ namespace ATM
             //创建一个空白文件
             if (File.Exists(configFile))
             {
-               String[] str=File.ReadAllLines(configFile);
+                String[] str = File.ReadAllLines(configFile);
                 skinH.AttachEx(AppContext.BaseDirectory + "/skins/" + str[0].Substring(10), null);
                 tb_packageName.Text = str[2].Substring(13);
                 tb_path.Text = str[3].Substring(12);
@@ -676,16 +672,67 @@ namespace ATM
 
         private void tb_packageName_Leave(object sender, EventArgs e)
         {
-           String[] str=File.ReadAllLines(configFile);
-            str[2]= "package name:" + tb_packageName.Text;
+            String[] str = File.ReadAllLines(configFile);
+            str[2] = "package name:" + tb_packageName.Text;
             File.WriteAllLines(configFile, str, Encoding.UTF8);
         }
 
-    
+
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("ARM自动化构建脚本。\n版本：V1.0.5", "Arm工具", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void 反馈ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("有问题：联系QQ：304291673\n\nEnjoy!。\n", "反馈", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            tb_pageName.Clear();
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            if(tb_path.Text.ToString().Trim() != "")
+            {
+                System.Diagnostics.Process.Start("Explorer.exe",tb_path.Text.Trim());
+            }
+            else
+            {
+                MessageBox.Show("目录地址为空！请先选中并生成文件", "Arm工具", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void rb_java_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb_java.Checked)
+            {
+                tb_model.Text =tb_model.Text.Trim().Replace(".kt",".java");
+                tb_view.Text=tb_view.Text.Trim().Replace(".kt",".java");
+                tb_presenter.Text=tb_presenter.Text.Trim().Replace(".kt",".java");
+                tb_module.Text = tb_module.Text.Trim().Replace(".kt",".java");
+                tb_component.Text = tb_component.Text.Trim().Replace(".kt", ".java");
+            }
+        }
+
+        private void rb_kotlin_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb_kotlin.Checked)
+            {
+                tb_model.Text = tb_model.Text.Trim().Replace(".java",".kt");
+                tb_view.Text = tb_view.Text.Trim().Replace(".java", ".kt");
+                tb_presenter.Text = tb_presenter.Text.Trim().Replace(".java", ".kt");
+                tb_module.Text = tb_module.Text.Trim().Replace(".java", ".kt");
+                tb_component.Text = tb_component.Text.Trim().Replace(".java", ".kt");
+            }
         }
     }
 }

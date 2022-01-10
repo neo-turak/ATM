@@ -69,6 +69,8 @@ namespace ATM
             this.帮助HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.反馈ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.btnOpen = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -124,7 +126,7 @@ namespace ATM
             this.tb_path.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_path.Location = new System.Drawing.Point(76, 98);
             this.tb_path.Name = "tb_path";
-            this.tb_path.Size = new System.Drawing.Size(427, 22);
+            this.tb_path.Size = new System.Drawing.Size(339, 22);
             this.tb_path.TabIndex = 2;
             // 
             // groupBox1
@@ -225,6 +227,7 @@ namespace ATM
             this.rb_kotlin.TabStop = true;
             this.rb_kotlin.Text = "Kotlin";
             this.rb_kotlin.UseVisualStyleBackColor = true;
+            this.rb_kotlin.CheckedChanged += new System.EventHandler(this.rb_kotlin_CheckedChanged);
             // 
             // rb_java
             // 
@@ -237,6 +240,7 @@ namespace ATM
             this.rb_java.TabStop = true;
             this.rb_java.Text = "Java";
             this.rb_java.UseVisualStyleBackColor = false;
+            this.rb_java.CheckedChanged += new System.EventHandler(this.rb_java_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -352,7 +356,7 @@ namespace ATM
             // 
             // btn_pickPath
             // 
-            this.btn_pickPath.Location = new System.Drawing.Point(509, 92);
+            this.btn_pickPath.Location = new System.Drawing.Point(424, 92);
             this.btn_pickPath.Name = "btn_pickPath";
             this.btn_pickPath.Size = new System.Drawing.Size(79, 34);
             this.btn_pickPath.TabIndex = 3;
@@ -439,14 +443,36 @@ namespace ATM
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.关于ToolStripMenuItem.Text = "关于";
+            this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
             // 反馈ToolStripMenuItem
             // 
             this.反馈ToolStripMenuItem.Name = "反馈ToolStripMenuItem";
-            this.反馈ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.反馈ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.反馈ToolStripMenuItem.Text = "反馈";
+            this.反馈ToolStripMenuItem.Click += new System.EventHandler(this.反馈ToolStripMenuItem_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(344, 27);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(71, 31);
+            this.btnClear.TabIndex = 11;
+            this.btnClear.Text = "清除";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // btnOpen
+            // 
+            this.btnOpen.Location = new System.Drawing.Point(509, 92);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(79, 34);
+            this.btnOpen.TabIndex = 12;
+            this.btnOpen.Text = "打开目录";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // Main
             // 
@@ -454,6 +480,8 @@ namespace ATM
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSkyBlue;
             this.ClientSize = new System.Drawing.Size(604, 530);
+            this.Controls.Add(this.btnOpen);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -528,6 +556,8 @@ namespace ATM
         private System.Windows.Forms.ToolStripMenuItem 帮助HToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 反馈ToolStripMenuItem;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnOpen;
     }
 }
 

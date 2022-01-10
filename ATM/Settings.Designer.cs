@@ -63,6 +63,7 @@
             this.cb_contract = new System.Windows.Forms.CheckBox();
             this.cb_model = new System.Windows.Forms.CheckBox();
             this.btnSave = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +71,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(178, 22);
+            this.label1.Location = new System.Drawing.Point(284, 20);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 15);
@@ -90,13 +91,13 @@
             // 
             this.tbName.Location = new System.Drawing.Point(144, 52);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(207, 25);
+            this.tbName.Size = new System.Drawing.Size(166, 25);
             this.tbName.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(31, 86);
+            this.label3.Location = new System.Drawing.Point(31, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 15);
             this.label3.TabIndex = 3;
@@ -141,6 +142,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Silver;
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.cbAuto);
             this.groupBox1.Controls.Add(this.btn_layout);
             this.groupBox1.Controls.Add(this.btn_fragment);
@@ -175,7 +177,7 @@
             // cbAuto
             // 
             this.cbAuto.AutoSize = true;
-            this.cbAuto.Location = new System.Drawing.Point(222, 276);
+            this.cbAuto.Location = new System.Drawing.Point(14, 275);
             this.cbAuto.Name = "cbAuto";
             this.cbAuto.Size = new System.Drawing.Size(86, 19);
             this.cbAuto.TabIndex = 17;
@@ -433,6 +435,17 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.ForeColor = System.Drawing.Color.DimGray;
+            this.label5.Location = new System.Drawing.Point(107, 269);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(337, 30);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "勾选：生成文件的时候自动创建到对应的目录下。\r\n未勾选：生成到设置的目录下。";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -502,5 +515,6 @@
         private System.Windows.Forms.TextBox tb_layout;
         private System.Windows.Forms.CheckBox cb_layout;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Label label5;
     }
 }
