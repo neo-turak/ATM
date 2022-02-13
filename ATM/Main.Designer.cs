@@ -383,7 +383,7 @@ namespace ATM
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 18);
             this.label5.TabIndex = 8;
-            this.label5.Text = "V 1.0.5";
+            this.label5.Text = "V 1.0.6";
             // 
             // contextMenuStrip1
             // 
@@ -414,20 +414,20 @@ namespace ATM
             // TSMI皮肤
             // 
             this.TSMI皮肤.Name = "TSMI皮肤";
-            this.TSMI皮肤.Size = new System.Drawing.Size(126, 22);
+            this.TSMI皮肤.Size = new System.Drawing.Size(180, 22);
             this.TSMI皮肤.Text = "皮肤";
             // 
             // tsmi环境
             // 
             this.tsmi环境.Name = "tsmi环境";
-            this.tsmi环境.Size = new System.Drawing.Size(126, 22);
+            this.tsmi环境.Size = new System.Drawing.Size(180, 22);
             this.tsmi环境.Text = "环境配置";
             this.tsmi环境.Click += new System.EventHandler(this.tsmi环境_Click);
             // 
             // TSMIexit
             // 
             this.TSMIexit.Name = "TSMIexit";
-            this.TSMIexit.Size = new System.Drawing.Size(126, 22);
+            this.TSMIexit.Size = new System.Drawing.Size(180, 22);
             this.TSMIexit.Text = "退出(&X)";
             this.TSMIexit.Click += new System.EventHandler(this.TSMIexit_Click);
             // 
@@ -500,6 +500,7 @@ namespace ATM
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ARM 模板助手";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.atm_Load);

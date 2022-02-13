@@ -37,6 +37,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lblPath = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.cbAuto = new System.Windows.Forms.CheckBox();
             this.btn_layout = new System.Windows.Forms.Button();
             this.btn_fragment = new System.Windows.Forms.Button();
@@ -63,7 +64,6 @@
             this.cb_contract = new System.Windows.Forms.CheckBox();
             this.cb_model = new System.Windows.Forms.CheckBox();
             this.btnSave = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -141,7 +141,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.BackColor = System.Drawing.Color.Silver;
+            this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.cbAuto);
             this.groupBox1.Controls.Add(this.btn_layout);
@@ -168,11 +170,23 @@
             this.groupBox1.Controls.Add(this.cb_presenter);
             this.groupBox1.Controls.Add(this.cb_contract);
             this.groupBox1.Controls.Add(this.cb_model);
-            this.groupBox1.Location = new System.Drawing.Point(34, 175);
+            this.groupBox1.ImeMode = System.Windows.Forms.ImeMode.Katakana;
+            this.groupBox1.Location = new System.Drawing.Point(34, 146);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(568, 313);
+            this.groupBox1.Size = new System.Drawing.Size(573, 370);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.ForeColor = System.Drawing.Color.DimGray;
+            this.label5.Location = new System.Drawing.Point(107, 269);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(337, 30);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "勾选：生成文件的时候自动创建到对应的目录下。\r\n未勾选：生成到设置的目录下。";
             // 
             // cbAuto
             // 
@@ -427,7 +441,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(245, 503);
+            this.btnSave.Location = new System.Drawing.Point(179, 318);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(97, 42);
             this.btnSave.TabIndex = 18;
@@ -435,24 +449,12 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.ForeColor = System.Drawing.Color.DimGray;
-            this.label5.Location = new System.Drawing.Point(107, 269);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(337, 30);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "勾选：生成文件的时候自动创建到对应的目录下。\r\n未勾选：生成到设置的目录下。";
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.ClientSize = new System.Drawing.Size(626, 553);
-            this.Controls.Add(this.btnSave);
+            this.BackColor = System.Drawing.Color.SkyBlue;
+            this.ClientSize = new System.Drawing.Size(627, 532);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblPath);
             this.Controls.Add(this.button1);
@@ -462,7 +464,9 @@
             this.Controls.Add(this.tbName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("SimSun", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -488,13 +492,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblPath;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tb_view;
         private System.Windows.Forms.TextBox tb_component;
-        private System.Windows.Forms.TextBox tb_module;
-        private System.Windows.Forms.TextBox tb_presenter;
-        private System.Windows.Forms.TextBox tb_contract;
-        private System.Windows.Forms.TextBox tb_model;
         private System.Windows.Forms.CheckBox cb_view;
         private System.Windows.Forms.CheckBox cb_component;
         private System.Windows.Forms.CheckBox cb_module;
@@ -516,5 +515,10 @@
         private System.Windows.Forms.CheckBox cb_layout;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label5;
+        protected System.Windows.Forms.GroupBox groupBox1;
+        protected System.Windows.Forms.TextBox tb_module;
+        protected System.Windows.Forms.TextBox tb_presenter;
+        public System.Windows.Forms.TextBox tb_contract;
+        protected System.Windows.Forms.TextBox tb_model;
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using SkinSharp;
+
 namespace ATM
 {
     public partial class Main : Form
@@ -110,17 +111,70 @@ namespace ATM
             }
         }
 
-        public void createFile(String fileName, String content)
+        public void createFile(String fileName, String content, GENERATE_TYPE _TYPE)
         {
+
             FileStream s;
-            if (fileName.EndsWith("\\"))
+            String[] config = File.ReadAllLines(configFile);
+            String destination = "";
+            //如果是自动模式
+            if (config[13] == "auto:true")
             {
-                s = new FileStream(tb_path.Text + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                switch (_TYPE)
+                {
+
+                    case GENERATE_TYPE.CONTRACT:
+                        destination = config[5].Substring(14);
+                        break;
+                    case GENERATE_TYPE.MODEL:
+                        destination = config[6].Substring(11);
+                        break;
+                    case GENERATE_TYPE.PRESENTER:
+                        destination = config[7].Substring(15);
+                        break;
+                    case GENERATE_TYPE.MODULE:
+                        destination = config[8].Substring(12);
+                        break;
+                    case GENERATE_TYPE.COMPONENT:
+                        destination = config[9].Substring(15);
+                        break;
+                    case GENERATE_TYPE.ACTIVITY:
+                        destination = config[10].Substring(14);
+                        break;
+                    case GENERATE_TYPE.FRAGMENT:
+                        destination = config[11].Substring(14);
+                        break;
+                    case GENERATE_TYPE.VIEW:
+                        destination = config[12].Substring(12);
+                        break;
+                    default:
+                        break;
+                }
+                //创建目录
+                System.IO.Directory.CreateDirectory(destination);
+                if (fileName.EndsWith("\\"))
+                {
+                    s = new FileStream(destination + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                }
+                else
+                {
+                    s = new FileStream(destination + "\\" + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                }
             }
+            //如果不是，生成到默认目录下
             else
             {
-                s = new FileStream(tb_path.Text + "\\" + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                if (fileName.EndsWith("\\"))
+                {
+                    s = new FileStream(tb_path.Text + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                }
+                else
+                {
+                    s = new FileStream(tb_path.Text + "\\" + fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                }
             }
+
+
             StreamWriter sw = new StreamWriter(s);
             sw.Write(content);
             sw.Flush();
@@ -208,7 +262,7 @@ namespace ATM
                 "@" + type + "Scope\n" +
                 "@Component(modules = [" + tb_pageName.Text + "Module::class],dependencies = [AppComponent::class])\n" +
                 "interface " + tb_pageName.Text + "Component{\n" +
-                "    fun inject(activity:" + tb_pageName.Text + type + ")\n" +
+                "    fun inject("+type.ToLower() +":"+ tb_pageName.Text + type + ")\n" +
                 "}";
             return module;
         }
@@ -241,7 +295,7 @@ namespace ATM
             "     *@Time  " + DateTime.Now.ToString() + "\n" +
             "     *@Description  \n" +
             "     *@Version 1.0  \n" +
-            "     **/\n\n"+
+            "     **/\n\n" +
             "//TODO 请自行声明到Manifest里\n" +
             "class " + tb_pageName.Text + "Activity : BaseActivity<" + tb_pageName.Text + "Presenter>() , " + tb_pageName.Text + "Contract.View {\n\n" +
             "    override fun setupActivityComponent(appComponent:AppComponent) {\n" +
@@ -275,24 +329,24 @@ namespace ATM
                 //语言：Java
                 if (rb_java.Checked)
                 {
-                    createFile(tb_model.Text, GenerateJModel());
-                    createFile(tb_layout.Text, GenerateLayout());
-                    createFile(tb_component.Text, GenerateJComponent());
-                    createFile(tb_module.Text, GenerateJModule());
-                    createFile(tb_presenter.Text, GenerateJPresenter());
-                    createFile(tb_view.Text, GenerateJContract());
-                    createFile(tb_pageName.Text + "Activity.java", GenerateJActivity());
+                    if(cb_model.Checked) createFile(tb_model.Text, GenerateJModel(), GENERATE_TYPE.MODEL);
+                    if(cb_layout.Checked) createFile(tb_layout.Text, GenerateLayout(), GENERATE_TYPE.VIEW);
+                    if(cb_component.Checked)  createFile(tb_component.Text, GenerateJComponent(), GENERATE_TYPE.COMPONENT);
+                    if(cb_module.Checked)  createFile(tb_module.Text, GenerateJModule(), GENERATE_TYPE.MODULE);
+                    if(cb_presenter.Checked) createFile(tb_presenter.Text, GenerateJPresenter(), GENERATE_TYPE.PRESENTER);
+                    if(cb_view.Checked) createFile(tb_view.Text, GenerateJContract(), GENERATE_TYPE.CONTRACT);
+                   createFile(tb_pageName.Text + "Activity.java", GenerateJActivity(), GENERATE_TYPE.ACTIVITY);
                 }
                 //语言：Kotlin
                 else
                 {
-                    createFile(tb_model.Text, GenerateKModel("Activity"));
-                    createFile(tb_layout.Text, GenerateLayout());
-                    createFile(tb_component.Text, GenerateKComponent("Activity"));
-                    createFile(tb_module.Text, GenerateKModule("Activity"));
-                    createFile(tb_presenter.Text, GenerateKPresenter("Activity"));
-                    createFile(tb_view.Text, GenerateKContract());
-                    createFile(tb_pageName.Text + "Activity.kt", GenerateKActivity());
+                    if (cb_model.Checked) createFile(tb_model.Text, GenerateKModel("Activity"), GENERATE_TYPE.MODEL);
+                    if (cb_layout.Checked) createFile(tb_layout.Text, GenerateLayout(), GENERATE_TYPE.VIEW);
+                    if (cb_component.Checked) createFile(tb_component.Text, GenerateKComponent("Activity"), GENERATE_TYPE.COMPONENT);
+                    if (cb_module.Checked) createFile(tb_module.Text, GenerateKModule("Activity"), GENERATE_TYPE.MODULE);
+                    if (cb_presenter.Checked) createFile(tb_presenter.Text, GenerateKPresenter("Activity"), GENERATE_TYPE.PRESENTER);
+                    if (cb_view.Checked) createFile(tb_view.Text, GenerateKContract(), GENERATE_TYPE.CONTRACT);
+                    createFile(tb_pageName.Text + "Activity.kt", GenerateKActivity(), GENERATE_TYPE.ACTIVITY);
                 }
 
             }
@@ -302,25 +356,25 @@ namespace ATM
                 //语言Kotlin
                 if (rb_kotlin.Checked)
                 {
-                    createFile(tb_model.Text, GenerateKModel("Fragment"));
-                    createFile(tb_layout.Text, GenerateLayout());
-                    createFile(tb_component.Text, GenerateKComponent("Fragment"));
-                    createFile(tb_module.Text, GenerateKModule("Fragment"));
-                    createFile(tb_presenter.Text, GenerateKPresenter("Fragment"));
-                    createFile(tb_view.Text, GenerateKContract());
-                    createFile(tb_pageName.Text + "Fragment.kt", GenerateKFragment());
+                    if (cb_model.Checked) createFile(tb_model.Text, GenerateKModel("Fragment"), GENERATE_TYPE.MODEL);
+                    if (cb_layout.Checked) createFile(tb_layout.Text, GenerateLayout(), GENERATE_TYPE.VIEW);
+                    if (cb_component.Checked) createFile(tb_component.Text, GenerateKComponent("Fragment"), GENERATE_TYPE.COMPONENT);
+                    if (cb_module.Checked) createFile(tb_module.Text, GenerateKModule("Fragment"), GENERATE_TYPE.MODULE);
+                    if (cb_presenter.Checked) createFile(tb_presenter.Text, GenerateKPresenter("Fragment"), GENERATE_TYPE.PRESENTER);
+                    if (cb_view.Checked) createFile(tb_view.Text, GenerateKContract(), GENERATE_TYPE.CONTRACT);
+                    createFile(tb_pageName.Text + "Fragment.kt", GenerateKFragment(), GENERATE_TYPE.FRAGMENT);
                 }
                 else
                 {
                     //语言Java
-                    createFile(tb_model.Text, GenerateJModel());
-                    createFile(tb_layout.Text, GenerateLayout());
-                    createFile(tb_component.Text, GenerateJComponent());
-                    createFile(tb_module.Text, GenerateJModule());
-                    createFile(tb_presenter.Text, GenerateJPresenter());
-                    createFile(tb_view.Text, GenerateJContract());
+                    if (cb_model.Checked) createFile(tb_model.Text, GenerateJModel(), GENERATE_TYPE.MODEL);
+                    if (cb_layout.Checked) createFile(tb_layout.Text, GenerateLayout(), GENERATE_TYPE.VIEW);
+                    if (cb_component.Checked) createFile(tb_component.Text, GenerateJComponent(), GENERATE_TYPE.COMPONENT);
+                    if (cb_module.Checked) createFile(tb_module.Text, GenerateJModule(), GENERATE_TYPE.MODULE);
+                    if (cb_presenter.Checked) createFile(tb_presenter.Text, GenerateJPresenter(), GENERATE_TYPE.PRESENTER);
+                    if (cb_view.Checked) createFile(tb_view.Text, GenerateJContract(), GENERATE_TYPE.CONTRACT);
                     //TODO 要生成JFragment
-                    //     createFile(tb_pageName.Text + "Fragment.java", GenerateJFragment());
+                    createFile(tb_pageName.Text + "Fragment.java", GenerateKFragment(), GENERATE_TYPE.FRAGMENT);
                 }
 
             }
@@ -517,7 +571,7 @@ namespace ATM
         {
             String package = tb_packageName.Text.ToString();
             String module =
-"package " + package + "\n\n" +
+            "package " + package + "\n\n" +
 "import android.content.Intent\n" +
 "import android.os.Bundle\n" +
 "import android.os.Message\n" +
@@ -531,8 +585,7 @@ namespace ATM
 "import " + package + "." + tb_pageName.Text.ToString() + "Module\n" +
 "import " + package + "." + tb_pageName.Text.ToString() + "Contract\n" +
 "import " + package + "." + tb_pageName.Text.ToString() + "Presenter\n\n" +
-"import " + package + ".R\n\n\n\n" +
-
+"import " + package + ".R\n\n" +
 
 "class " + tb_pageName.Text.ToString() + "Fragment : BaseFragment<" + tb_pageName.Text.ToString() + "Presenter>() , " + tb_pageName.Text.ToString() + "Contract.View{\n" +
 "   companion object {\n" +
@@ -686,7 +739,7 @@ namespace ATM
 
         private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("ARM自动化构建脚本。\n版本：V1.0.5", "Arm工具", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("ARM自动化构建脚本。\n版本：V1.0.6", "Arm工具", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void 反馈ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -701,9 +754,9 @@ namespace ATM
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            if(tb_path.Text.ToString().Trim() != "")
+            if (tb_path.Text.ToString().Trim() != "")
             {
-                System.Diagnostics.Process.Start("Explorer.exe",tb_path.Text.Trim());
+                System.Diagnostics.Process.Start("Explorer.exe", tb_path.Text.Trim());
             }
             else
             {
@@ -715,10 +768,10 @@ namespace ATM
         {
             if (rb_java.Checked)
             {
-                tb_model.Text =tb_model.Text.Trim().Replace(".kt",".java");
-                tb_view.Text=tb_view.Text.Trim().Replace(".kt",".java");
-                tb_presenter.Text=tb_presenter.Text.Trim().Replace(".kt",".java");
-                tb_module.Text = tb_module.Text.Trim().Replace(".kt",".java");
+                tb_model.Text = tb_model.Text.Trim().Replace(".kt", ".java");
+                tb_view.Text = tb_view.Text.Trim().Replace(".kt", ".java");
+                tb_presenter.Text = tb_presenter.Text.Trim().Replace(".kt", ".java");
+                tb_module.Text = tb_module.Text.Trim().Replace(".kt", ".java");
                 tb_component.Text = tb_component.Text.Trim().Replace(".kt", ".java");
             }
         }
@@ -727,7 +780,7 @@ namespace ATM
         {
             if (rb_kotlin.Checked)
             {
-                tb_model.Text = tb_model.Text.Trim().Replace(".java",".kt");
+                tb_model.Text = tb_model.Text.Trim().Replace(".java", ".kt");
                 tb_view.Text = tb_view.Text.Trim().Replace(".java", ".kt");
                 tb_presenter.Text = tb_presenter.Text.Trim().Replace(".java", ".kt");
                 tb_module.Text = tb_module.Text.Trim().Replace(".java", ".kt");
