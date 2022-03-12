@@ -55,6 +55,7 @@ namespace ATM
 
         private void button1_Click(object sender, EventArgs e)
         {
+            id = tbProjectId.Text;
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.Description = "请选择项目根目录";
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -104,7 +105,7 @@ namespace ATM
 
                     if (cb_fragment.Checked)
                     {
-                        tb_fragment.Text= dialog.SelectedPath + @"\app\src\main\java\" + id.Replace(".", @"\") + @"\ui\fragment";
+                        tb_fragment.Text= dialog.SelectedPath + @"\app\src\main\java\" + id.Replace(".", @"\") + @"mvp\ui\fragment";
                     }
 
                     if (cb_layout.Checked)

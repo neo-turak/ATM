@@ -239,6 +239,7 @@ namespace ATM
             module += "import com.jess.arms.di.scope." + type + "Scope\n" +
                     "import dagger.Module\n" +
                     "import dagger.Provides\n\n\n" +
+                    "@Module"+
                     "class " + tb_pageName.Text + "Module(private val view:" + tb_pageName.Text + "Contract.View) {\n" +
                     "@" + type + "Scope\n" +
                     "@Provides\n" +
@@ -786,6 +787,11 @@ namespace ATM
                 tb_module.Text = tb_module.Text.Trim().Replace(".java", ".kt");
                 tb_component.Text = tb_component.Text.Trim().Replace(".java", ".kt");
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
